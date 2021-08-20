@@ -1,0 +1,479 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Library">
+      <UniqueIdentifier>{d5173dcf-2786-4f98-bd55-d03549637dfe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src">
+      <UniqueIdentifier>{80d0a5a9-6779-4863-bede-cc22a4986dc5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\System">
+      <UniqueIdentifier>{f5928314-3ee2-4e39-abfa-d93aa9ee5891}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\System\Direct3D">
+      <UniqueIdentifier>{f193abd5-e51c-466e-a937-722bc9175e9a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\System\Utility">
+      <UniqueIdentifier>{f5d733b1-5031-4659-a9d4-0dd3add1e5fb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\System\Window">
+      <UniqueIdentifier>{cb022f2a-c5a2-449b-9b70-5110aff8550f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Library\tinygltf">
+      <UniqueIdentifier>{307bfbcd-124f-4ad7-85f5-3fd94f814b1f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\System\Shader">
+      <UniqueIdentifier>{93543c0c-58fe-4a94-8279-7be3021b65b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\System\Shader\EffectShader">
+      <UniqueIdentifier>{3ed945a9-befa-4db2-b780-7714e82626ed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\System\Shader\SpriteShader">
+      <UniqueIdentifier>{2da4d471-f4e8-4b2d-bdef-b93f91523b8b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\System\Shader\StandardShader">
+      <UniqueIdentifier>{0a93a6dd-bb60-46dc-820f-6aea10b3b02f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application">
+      <UniqueIdentifier>{d0d0f9cf-dabd-4346-bc9a-d9c04cf42372}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\System\Audio">
+      <UniqueIdentifier>{667d1cb1-5ae5-476f-acd5-14b7d294a95a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\player">
+      <UniqueIdentifier>{8df80bcc-cb3a-419f-989d-2fd29bba4c01}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\Shell">
+      <UniqueIdentifier>{9ca1d3e3-a7dd-4ba8-b429-621e7c43d825}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\player\header">
+      <UniqueIdentifier>{89eab9b9-0919-478e-8ba2-e4f839858d53}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\player\source">
+      <UniqueIdentifier>{b4173785-80db-441f-a450-b2182190b96e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\2Ditem">
+      <UniqueIdentifier>{948dfd42-3d2c-4c5d-a43b-2679f16df17e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\2Ditem\header">
+      <UniqueIdentifier>{6c9b7f75-566f-45ed-a7d5-f05477c3494e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\2Ditem\source">
+      <UniqueIdentifier>{6d8fc7c6-9e90-4ec4-aed4-c3d84baa61ff}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\gamescene">
+      <UniqueIdentifier>{bead4b3c-a0f9-43f3-9209-db4fb0249a98}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\gamescene\header">
+      <UniqueIdentifier>{eeedd77e-061f-4e13-9d90-bbcc91993c9d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\gamescene\source">
+      <UniqueIdentifier>{d83c9018-fc94-468b-a572-771f3729ccaf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\manager">
+      <UniqueIdentifier>{e3da345d-57a9-4ef7-8ee9-993162f78001}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\manager\header">
+      <UniqueIdentifier>{d8b9d957-7f81-46d3-8c87-9b3a0c6e9f3d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\manager\source">
+      <UniqueIdentifier>{05e155f9-d84d-4dcc-8b9b-cbb468cbf073}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\3Ditem">
+      <UniqueIdentifier>{a67668cd-93fd-4e6d-9d88-9f940425a00a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\3Ditem\header">
+      <UniqueIdentifier>{e2abbc79-d131-4d52-ace5-9d33439c6a6f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Src\Application\3Ditem\source">
+      <UniqueIdentifier>{4f99e079-76de-42ac-ba42-8da30ec9ae09}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="src\Pch.h">
+      <Filter>Src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\tinygltf\json.hpp">
+      <Filter>Library\tinygltf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\tinygltf\stb_image.h">
+      <Filter>Library\tinygltf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\tinygltf\stb_image_write.h">
+      <Filter>Library\tinygltf</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\tinygltf\tiny_gltf.h">
+      <Filter>Library\tinygltf</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\main.h">
+      <Filter>Src\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="src\System\Direct3D\KdDirect3D.h">
+      <Filter>Src\System\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="src\System\Direct3D\KdModel.h">
+      <Filter>Src\System\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="src\System\Direct3D\KdTexture.h">
+      <Filter>Src\System\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="src\System\Direct3D\KdBuffer.h">
+      <Filter>Src\System\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\System\Audio\KdAudio.h">
+      <Filter>Src\System\Audio</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\System\Direct3D\KdGLTFLoader.h">
+      <Filter>Src\System\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\System\Shader\KdShaderManager.h">
+      <Filter>Src\System\Shader</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\System\Shader\EffectShader\KdEffectShader.h">
+      <Filter>Src\System\Shader\EffectShader</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\System\Shader\SpriteShader\KdSpriteShader.h">
+      <Filter>Src\System\Shader\SpriteShader</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\System\Shader\StandardShader\KdStandardShader.h">
+      <Filter>Src\System\Shader\StandardShader</Filter>
+    </ClInclude>
+    <ClInclude Include="src\System\Utility\KdUtility.h">
+      <Filter>Src\System\Utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\System\KdSystem.h">
+      <Filter>Src\System</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Library\strconv.h">
+      <Filter>Library</Filter>
+    </ClInclude>
+    <ClInclude Include="src\System\Window\KdWindow.h">
+      <Filter>Src\System\Window</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\define.h">
+      <Filter>Src\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Shell\Shell.h">
+      <Filter>Src\Application\Shell</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\ModelIntersects.h">
+      <Filter>Src\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\System\KeySystem.h">
+      <Filter>Src\System</Filter>
+    </ClInclude>
+    <ClInclude Include="resource.h" />
+    <ClInclude Include="Src\Application\block\bbqgrill.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\block\block.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\block\button.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\block\can.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\block\coal.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\block\cylinder.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\block\faucet.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\block\smoke.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\block\spoon.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\player\fellow1.h">
+      <Filter>Src\Application\player\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\player\fellow2.h">
+      <Filter>Src\Application\player\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\player\player.h">
+      <Filter>Src\Application\player\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\player\playermove1.h">
+      <Filter>Src\Application\player\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\player\playermove2.h">
+      <Filter>Src\Application\player\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\player\state.h">
+      <Filter>Src\Application\player\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\player\statelist.h">
+      <Filter>Src\Application\player\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\player\transwait.h">
+      <Filter>Src\Application\player\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\icon.h">
+      <Filter>Src\Application\2Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\number.h">
+      <Filter>Src\Application\2Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\warp.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\water.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\background.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\backitem.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Scene.h">
+      <Filter>Src\Application\gamescene\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\TitelScene.h">
+      <Filter>Src\Application\gamescene\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\Game.h">
+      <Filter>Src\Application\gamescene\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\CompleteScene.h">
+      <Filter>Src\Application\gamescene\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\ClearScene.h">
+      <Filter>Src\Application\gamescene\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\SceneManager.h">
+      <Filter>Src\Application\manager\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\block\blockmanager.h">
+      <Filter>Src\Application\manager\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\player\playerManager.h">
+      <Filter>Src\Application\manager\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\ground\ground.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\System\ModelManager.h">
+      <Filter>Src\Application\manager\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\SoundManager.h">
+      <Filter>Src\Application\manager\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\vld.h">
+      <Filter>Src\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\vld_def.h">
+      <Filter>Src\Application</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\GameOverScene.h">
+      <Filter>Src\Application\gamescene\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\block\elevator.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\Application\canbutton.h">
+      <Filter>Src\Application\3Ditem\header</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\Pch.cpp">
+      <Filter>Src</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\main.cpp">
+      <Filter>Src\Application</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\Direct3D\KdDirect3D.cpp">
+      <Filter>Src\System\Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\Direct3D\KdModel.cpp">
+      <Filter>Src\System\Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\Direct3D\KdTexture.cpp">
+      <Filter>Src\System\Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\Direct3D\KdBuffer.cpp">
+      <Filter>Src\System\Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\System\Audio\KdAudio.cpp">
+      <Filter>Src\System\Audio</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\System\Direct3D\KdGLTFLoader.cpp">
+      <Filter>Src\System\Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\System\Shader\KdShaderManager.cpp">
+      <Filter>Src\System\Shader</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\System\Shader\EffectShader\KdEffectShader.cpp">
+      <Filter>Src\System\Shader\EffectShader</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\System\Shader\SpriteShader\KdSpriteShader.cpp">
+      <Filter>Src\System\Shader\SpriteShader</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\System\Shader\StandardShader\KdStandardShader.cpp">
+      <Filter>Src\System\Shader\StandardShader</Filter>
+    </ClCompile>
+    <ClCompile Include="src\System\Window\KdWindow.cpp">
+      <Filter>Src\System\Window</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\System\Utility\KdUtility.cpp">
+      <Filter>Src\System\Utility</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Shell\Shell.cpp">
+      <Filter>Src\Application\Shell</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\block\bbqgrill.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\block\block.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\block\button.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\block\can.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\block\coal.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\block\cylinder.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\block\faucet.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\block\smoke.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\block\spoon.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\player\fellow1.cpp">
+      <Filter>Src\Application\player\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\player\fellow2.cpp">
+      <Filter>Src\Application\player\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\player\player.cpp">
+      <Filter>Src\Application\player\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\player\playermove1.cpp">
+      <Filter>Src\Application\player\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\player\playermove2.cpp">
+      <Filter>Src\Application\player\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\player\state.cpp">
+      <Filter>Src\Application\player\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\player\transwait.cpp">
+      <Filter>Src\Application\player\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\icon.cpp">
+      <Filter>Src\Application\2Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\number.cpp">
+      <Filter>Src\Application\2Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\warp.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\water.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\background.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\backitem.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\ClearScene.cpp">
+      <Filter>Src\Application\gamescene\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\CompleteScene.cpp">
+      <Filter>Src\Application\gamescene\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Game.cpp">
+      <Filter>Src\Application\gamescene\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Scene.cpp">
+      <Filter>Src\Application\gamescene\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\TitelScene.cpp">
+      <Filter>Src\Application\gamescene\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\SceneManager.cpp">
+      <Filter>Src\Application\manager\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\Soundmanager.cpp">
+      <Filter>Src\Application\manager\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\block\blockmanager.cpp">
+      <Filter>Src\Application\manager\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\player\playerManager.cpp">
+      <Filter>Src\Application\manager\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\ground\ground.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\System\ModelManager.cpp">
+      <Filter>Src\Application\manager\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\GameOverScene.cpp">
+      <Filter>Src\Application\gamescene\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\block\elevator.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\Application\canbutton.cpp">
+      <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Src\System\Shader\EffectShader\inc_KdEffectShader.hlsli">
+      <Filter>Src\System\Shader\EffectShader</Filter>
+    </None>
+    <None Include="Src\System\Shader\SpriteShader\inc_KdSpriteShader.hlsli">
+      <Filter>Src\System\Shader\SpriteShader</Filter>
+    </None>
+    <None Include="Src\System\Shader\StandardShader\inc_KdStandardShader.hlsli">
+      <Filter>Src\System\Shader\StandardShader</Filter>
+    </None>
+    <None Include="Src\System\Shader\inc_KdCommon.hlsli">
+      <Filter>Src\System\Shader\StandardShader</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <FxCompile Include="Src\System\Shader\EffectShader\KdEffectShader_PS.hlsl">
+      <Filter>Src\System\Shader\EffectShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Src\System\Shader\EffectShader\KdEffectShader_VS.hlsl">
+      <Filter>Src\System\Shader\EffectShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Src\System\Shader\SpriteShader\KdSpriteShader_PS.hlsl">
+      <Filter>Src\System\Shader\SpriteShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Src\System\Shader\SpriteShader\KdSpriteShader_VS.hlsl">
+      <Filter>Src\System\Shader\SpriteShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Src\System\Shader\StandardShader\KdStandardShader_PS.hlsl">
+      <Filter>Src\System\Shader\StandardShader</Filter>
+    </FxCompile>
+    <FxCompile Include="Src\System\Shader\StandardShader\KdStandardShader_VS.hlsl">
+      <Filter>Src\System\Shader\StandardShader</Filter>
+    </FxCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="Project.rc" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="icon.ico" />
+  </ItemGroup>
+</Project>
