@@ -60,6 +60,7 @@ public:
 	// 1x1 白テクスチャ取得
 	std::shared_ptr<KdTexture>	GetWhiteTex() const { return m_texWhite; }
 
+
 	//==============================================================
 	//
 	// 初期化・解放

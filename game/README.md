@@ -1,2 +1,0 @@
-# dango
-little game

@@ -17,10 +17,11 @@
 
 // テクスチャ
 #include "Direct3D/KdTexture.h"
+#include "Direct3D/KdCubeMapGenerator.h"
 // モデル
 #include "Direct3D/KdModel.h"
-
-
+// カメラ
+#include "Direct3D/KdCamera.h"
 // シェーダ
 #include "Shader/KdShaderManager.h"
 

@@ -88,7 +88,7 @@ public:
 
 	const Math::Matrix& GetRot()const { return m_Rot; }
 	const Math::Matrix& GetMat()const { return m_Mat; }
-	const Math::Vector3& GetPos()const { return m_Mat.Translation(); }
+	const Math::Vector3 GetPos()const { return m_Mat.Translation(); }
 	const Math::Vector3& GetcamVec() const { return m_CameraVec; }
 	const Math::Vector3& GetCamPos()const { return camPos; }
 	const float& GetAng() { return m_camAngY; }
@@ -160,7 +160,7 @@ private:
 	std::shared_ptr<KdSoundEffect> m_Soundbgm;
 	std::shared_ptr<KdSoundInstance> m_BgmInst;
 
-	
+	KdCubeMapGenerator m_cubeMapGen;
 	
 };
 

@@ -4,19 +4,23 @@
 C_Fellow1::C_Fellow1()
 {
 	m_Dango.Load("Data/model/player/dango2.gltf");
+	m_Shadow.Load("Data/model/shadow.gltf");
+
 	m_Trans = DirectX::XMMatrixTranslation(m_Pos.x, m_Pos.y, m_Pos.z - 2.0f);
 	m_Mat = m_Trans;
 	soundwait = 0;
 	scaleang = 0;
 	bounceXZ = 1.0f;
 	bounceY = 1.0f;
+	Salpha = 1.0f;
 	bounceflg = false;
-
+	m_SMat = DirectX::XMMatrixTranslation(m_Pos.x, m_Pos.y-0.8f, m_Pos.z - 2.0f);
 }
 
 C_Fellow1::~C_Fellow1()
 {
 	m_Dango.Release();
+	m_Shadow.Release();
 }
 
 void C_Fellow1::Draw()
@@ -24,6 +28,8 @@ void C_Fellow1::Draw()
 
 	SHADER.m_standardShader.SetWorldMatrix(m_Mat);
 	SHADER.m_standardShader.DrawModel(&m_Dango);
+	SHADER.m_standardShader.SetWorldMatrix(m_SMat);
+	SHADER.m_standardShader.DrawModel(&m_Shadow, Salpha);
 }
 
 void C_Fellow1::Update(Math::Vector3 _pos, std::unique_ptr<BlockManager>& _blockManager)
@@ -35,6 +41,7 @@ void C_Fellow1::Update(Math::Vector3 _pos, std::unique_ptr<BlockManager>& _block
 	if (SYSTEM.Getcolormode() == 1)
 	{
 		m_Pos = game->GetPos();
+		m_SPos = game->GetPos();
 
 		Math::Vector3 mainPos;
 		mainPos = m_Pos;
@@ -119,15 +126,14 @@ void C_Fellow1::Update(Math::Vector3 _pos, std::unique_ptr<BlockManager>& _block
 			m_Trans._42 = 0;
 		}
 
-		Math::Vector3 DownRayVec;
-		Math::Vector3 returnDownVec;
-		DownRayVec = Math::Vector3{ 0,-1,0 };
 		//地面にあったらの処理
-		if (_blockManager->CheckHit(m_Trans.Translation(), DownRayVec, m_hitDis, returnDownVec, range))
-		{
-			m_Trans._42 += returnDownVec.y;
-			gravity = 0;
-		}
+		HitCheck(_blockManager);
+
+		Math::Vector3 PtoSVec;
+		float PtoSLen;
+		PtoSLen = PtoSVec.Distance(m_Pos, (m_SPos + Math::Vector3{ 0.0f, 0.8f, 0.0f }));
+		Salpha = 1.0f - PtoSLen / 10;
+		
 		Math::Vector3 returnVec;
 		if (_blockManager->CheckHit(m_Trans.Translation(), frontVec, m_hitDis, returnVec, range) || game->GetShell()->CheckHit(m_Trans.Translation(), frontVec, m_hitDis, returnVec, range))
 		{
@@ -163,7 +169,7 @@ void C_Fellow1::Update(Math::Vector3 _pos, std::unique_ptr<BlockManager>& _block
 		//------------------------------------------------------------------------
 
 		m_Trans = m_Move * m_Trans;
-
+		m_STrans = m_Trans;
 		m_Scale = DirectX::XMMatrixScaling(bounceXZ, bounceY, bounceXZ);
 
 		//合成
@@ -174,8 +180,9 @@ void C_Fellow1::Update(Math::Vector3 _pos, std::unique_ptr<BlockManager>& _block
 		}
 		else
 		{
-
 			m_Mat = m_Scale * m_Trans;
+			m_STrans._42 = m_Pos.y - 0.8f;//シャドウのY位置調節
+			m_SMat = m_Scale * m_Move* m_STrans;
 		}
 	}
 
@@ -198,6 +205,7 @@ void C_Fellow1::Update(Math::Vector3 _pos, std::unique_ptr<BlockManager>& _block
 		{
 
 			m_Pos = game->GetPos();
+			m_SPos = game->GetPos();
 			if (GetAsyncKeyState('W') & 0x8000)
 			{
 				camMat = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(ang));
@@ -241,16 +249,13 @@ void C_Fellow1::Update(Math::Vector3 _pos, std::unique_ptr<BlockManager>& _block
 			m_Pos.y = 0;
 		}
 
-		Math::Vector3 DownRayVec;
-		Math::Vector3 returnDownVec;
-		DownRayVec = Math::Vector3{ 0,-1,0 };
 		//地面にあったらの処理
-		if (_blockManager->CheckHit(m_Pos, DownRayVec, m_hitDis, returnDownVec, range))
-		{
-			m_Pos.y += returnDownVec.y;
-			gravity = 0;
-		}
+		HitCheck(_blockManager);
 
+		Math::Vector3 PtoSVec;
+		float PtoSLen;
+		PtoSLen = PtoSVec.Distance(m_Pos, (m_SPos + Math::Vector3{ 0.0f, 0.8f, 0.0f }));
+		Salpha = 1.0f - PtoSLen / 10;
 
 		//団子のBOINGBOING設定
 		//------------------------------------------------------------------------------
@@ -322,6 +327,7 @@ void C_Fellow1::Update(Math::Vector3 _pos, std::unique_ptr<BlockManager>& _block
 			moveVec.Normalize();
 			moveVec *= 0.2f;
 			m_Pos += moveVec;
+			m_SPos += moveVec;
 			//ステージのアイテムと範囲外に当たったら
 			if (_blockManager->CheckHit(m_Pos, nowVec, m_hitDis, returnVec, range) || game->GetShell()->CheckHit(m_Pos, nowVec, m_hitDis, returnVec, range))
 			{
@@ -334,7 +340,11 @@ void C_Fellow1::Update(Math::Vector3 _pos, std::unique_ptr<BlockManager>& _block
 
 			//合成
 			m_Mat = m_Scale * m_Rot * m_Trans;
+			m_STrans = DirectX::XMMatrixTranslation(m_SPos.x, m_SPos.y, m_SPos.z);
+			m_SMat = m_Scale * m_STrans;
 		}
+
+		
 
 		soundwait--;
 		if (soundwait <= 0)
@@ -342,6 +352,31 @@ void C_Fellow1::Update(Math::Vector3 _pos, std::unique_ptr<BlockManager>& _block
 			soundwait = 0;
 		}
 	}
+	
+}
 
+void C_Fellow1::HitCheck(std::unique_ptr<BlockManager>& _blockManager)
+{
+	Math::Vector3 DownRayVec;
+	Math::Vector3 returnDownVec;
+	DownRayVec = Math::Vector3{ 0,-1,0 };
+	//地面にあったらの処理
+	if (_blockManager->CheckHit(m_Trans.Translation(), DownRayVec, m_hitDis, returnDownVec, range))
+	{
+		m_Trans._42 += returnDownVec.y;
+		gravity = 0;
+	}
+	Math::Vector3 SDownRayVec;
+	SDownRayVec = Math::Vector3{ 0.0f,-1.0f,0.0f };
+	float Srange;
+	Srange = range * 20;
+	if ((_blockManager->CheckHit(m_Trans.Translation(), SDownRayVec, m_hitDis, returnDownVec, Srange)))
+	{
+		m_SPos.y = m_Pos.y - m_hitDis + 0.1f;
+	}
+	else
+	{
+		m_SPos.y = -0.8f;
+	}
 }
 

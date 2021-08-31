@@ -191,6 +191,8 @@
     <ClInclude Include="Src\Application\warp.h" />
     <ClInclude Include="Src\Application\water.h" />
     <ClInclude Include="Src\System\Audio\KdAudio.h" />
+    <ClInclude Include="Src\System\Direct3D\KdCamera.h" />
+    <ClInclude Include="Src\System\Direct3D\KdCubeMapGenerator.h" />
     <ClInclude Include="src\System\Direct3D\KdDirect3D.h" />
     <ClInclude Include="Src\System\Direct3D\KdGLTFLoader.h" />
     <ClInclude Include="src\System\Direct3D\KdBuffer.h" />
@@ -248,6 +250,8 @@
     <ClCompile Include="Src\Application\warp.cpp" />
     <ClCompile Include="Src\Application\water.cpp" />
     <ClCompile Include="Src\System\Audio\KdAudio.cpp" />
+    <ClCompile Include="Src\System\Direct3D\KdCamera.cpp" />
+    <ClCompile Include="Src\System\Direct3D\KdCubeMapGenerator.cpp" />
     <ClCompile Include="src\System\Direct3D\KdDirect3D.cpp" />
     <ClCompile Include="Src\System\Direct3D\KdGLTFLoader.cpp" />
     <ClCompile Include="src\System\Direct3D\KdBuffer.cpp" />

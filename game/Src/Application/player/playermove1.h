@@ -14,6 +14,7 @@ private:
 	KdModel m_partW;
 	KdModel m_partG;
 	KdModel m_partP;
+	KdModel m_Shadow;
 
 	Math::Matrix m_Mat;
 	Math::Matrix G_mat;
@@ -22,7 +23,11 @@ private:
 	Math::Matrix m_Trans;
 	Math::Matrix m_Scale;
 
+	Math::Matrix m_SMat;
+	Math::Matrix m_STrans;
+
 	Math::Vector3 m_Pos;
+	Math::Vector3 m_SPos;
 	Math::Vector3 cur_pos;
 	Math::Vector3 Inertia;//Šµ«
 
@@ -36,7 +41,7 @@ private:
 	int soundwait;
 	float m_hitDis = {};
 	float	m_ang = 0;
-	float range = 1.0f;
+	float range = 1.2f;
 	float a = 1;
 	float scaleang;
 	float bounceXZ;
@@ -44,6 +49,7 @@ private:
 	float gravity = {};//d—Í
 	float pressure=1;
 	float release;
+	float Salpha;
 	bool moveFlg;//ˆÚ“®’†
 	bool InertiaFlg;//Šµ«ƒtƒ‰ƒO
 	bool jumpSound;

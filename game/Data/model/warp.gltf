@@ -67,10 +67,8 @@
                     "index" : 0,
                     "texCoord" : 0
                 },
-                "metallicRoughnessTexture" : {
-                    "index" : 1,
-                    "texCoord" : 0
-                }
+                "metallicFactor" : 1,
+                "roughnessFactor" : 0
             }
         }
     ],
@@ -91,9 +89,6 @@
         }
     ],
     "textures" : [
-        {
-            "source" : 0
-        },
         {
             "source" : 0
         }

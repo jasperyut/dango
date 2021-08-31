@@ -266,7 +266,7 @@ void Clearscene::Draw()
 	SHADER.m_spriteShader.SetMatrix(m_Nextmat);
 	SHADER.m_spriteShader.DrawTex(&m_Next, Math::Rectangle(0, 0, 170, 70), iconAlpha);
 
-	if (accountFlg == true)
+	if (accountFlg == true&&SYSTEM.GetnowStage()==0)
 	{
 		m_Number->Draw();
 	}

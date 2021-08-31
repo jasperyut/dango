@@ -14,18 +14,14 @@ VSOutput main(  float4 pos : POSITION,  // 頂点座標
   
     
     // 座標変換
-        Out.Pos = mul(pos, g_mW); // ローカル座標系 -> ワールド座標系へ変換
-        Out.wPos = Out.Pos.xyz;
-    Out.Pos = mul(Out.Pos, g_mV);   // ワールド座標系 -> ビュー座標系へ変換
-    Out.Pos = mul(Out.Pos, g_mP);   // ビュー座標系 -> 射影座標系へ変換
+    Out.Pos = mul(pos, g_mW); // キャラクターの座標変換 : ローカル座標系 -> ワールド座標系へ変換
+    Out.wPos = Out.Pos.xyz;
+    
+    Out.Pos = mul(Out.Pos, g_mV); // カメラの逆向きに変換 : ワールド座標系 -> ビュー座標系へ変換
+    Out.Pos = mul(Out.Pos, g_mP); // 射影空間に変換 : ビュー座標系 -> 射影座標系へ変換
 
     // 法線
-    Out.wN = normalize(mul(normal, (float3x3)g_mW));
-    
-    
-   
-   
-
+    Out.wN = normalize(mul(normal, (float3x3) g_mW));
     // 頂点色
     Out.Color = color;
 

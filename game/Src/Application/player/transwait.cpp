@@ -6,6 +6,10 @@ C_Transwait::C_Transwait()
 	m_partW.Load("Data/model/player/dango1.gltf");
 	m_partG.Load("Data/model/player/dango3.gltf");
 	m_partP.Load("Data/model/player/dango2.gltf");
+	for (int i = 0; i < 3; i++)
+	{
+		m_Shadow[i].Load("Data/model/shadow.gltf");
+	}
 	m_animeProgress = 0;
 	valueflg = false;
 	StateStore = 1;
@@ -17,6 +21,10 @@ C_Transwait::~C_Transwait()
 	m_partW.Release();
 	m_partG.Release();
 	m_partP.Release();
+	for (int i = 0; i < 3; i++)
+	{
+		m_Shadow[i].Release();
+	}
 }
 
 void C_Transwait::Draw()
@@ -27,6 +35,11 @@ void C_Transwait::Draw()
 	SHADER.m_standardShader.DrawModel(&m_partG);
 	SHADER.m_standardShader.SetWorldMatrix(P_mat);
 	SHADER.m_standardShader.DrawModel(&m_partP);
+	for (int i = 0; i < 3; i++)
+	{
+		SHADER.m_standardShader.SetWorldMatrix(S_mat[i]);
+		SHADER.m_standardShader.DrawModel(&m_Shadow[i]);
+	}
 }
 
 void C_Transwait::Update()
@@ -55,7 +68,7 @@ void C_Transwait::Update()
 			m_Pos = game->GetPos();
 			Pp = game->GetFellow1()->GetPos();//兄弟１の位置
 			Gp = game->GetFellow2()->GetPos();//兄弟２の位置
-
+			
 			
 			switch (StateStore)
 			{
@@ -74,13 +87,14 @@ void C_Transwait::Update()
 				Pstart_mat = DirectX::XMMatrixTranslation(m_Pos.x, m_Pos.y, m_Pos.z);
 				Gstart_mat = DirectX::XMMatrixTranslation(m_Pos.x, m_Pos.y, m_Pos.z);
 				break;
-			default:
-				break;
 			}
 
 			W_mat = RotMat * Wstart_mat;
 			P_mat = RotMat * Pstart_mat;
 			G_mat = RotMat * Gstart_mat;
+			S_mat[0] = W_mat;
+			S_mat[1] = P_mat;
+			S_mat[2] = G_mat;
 			//次のステップに行く
 			SYSTEM.SettransStep(1);
 		}
@@ -97,6 +111,10 @@ void C_Transwait::Update()
 				WPos = Wstart_mat.Translation();
 				PPos = Pstart_mat.Translation();
 				GPos = Gstart_mat.Translation();
+				for (int i = 0; i < 3; i++)
+				{
+					SPos[i] = S_mat[i].Translation() - Math::Vector3{0,0.8f,0};
+				}
 
 				switch (StateStore)
 				{
@@ -114,8 +132,6 @@ void C_Transwait::Update()
 					Wtmppos = Math::Vector3(WPos.x, WPos.y, WPos.z + 2.0f);
 					Ptmppos = Math::Vector3(PPos.x - 1.732f, PPos.y, PPos.z - 2.0f);
 					Gtmppos = Math::Vector3(GPos.x + 1.732f, GPos.y, GPos.z - 2.0f);
-					break;
-				default:
 					break;
 				}
 
@@ -138,7 +154,13 @@ void C_Transwait::Update()
 			WPos += WVec;
 			PPos += PVec;
 			GPos += GVec;
-
+			SPos[0] += WVec;
+			SPos[1] += PVec;
+			SPos[2] += GVec;
+			for (int i = 0; i < 3; i++)
+			{
+				SPos[i].y= Wstart_mat.Translation().y;
+			}
 			WPos.y += gravity;
 			PPos.y += gravity;
 			GPos.y += gravity;
@@ -149,7 +171,12 @@ void C_Transwait::Update()
 				WPos = Wtmppos;
 				PPos = Ptmppos;
 				GPos = Gtmppos;
+				SPos[0] = Wtmppos;
+				SPos[1] = Ptmppos;
+				SPos[2] = Gtmppos;
 			}
+
+			
 
 			//変換動画
 			m_animeProgress += 0.04f;
@@ -190,12 +217,10 @@ void C_Transwait::Update()
 					StateStore = 2;
 					break;
 				case 3://次は第三パターンの場合
-					Wtmppos = Math::Vector3(m_Pos.x, m_Pos.y, m_Pos.z);
-					Ptmppos = Math::Vector3(m_Pos.x, m_Pos.y, m_Pos.z);
-					Gtmppos = Math::Vector3(m_Pos.x, m_Pos.y, m_Pos.z);
+					Wtmppos = Math::Vector3(m_Pos.x, m_Pos.y+0.5f, m_Pos.z);
+					Ptmppos = Math::Vector3(m_Pos.x, m_Pos.y+0.5f, m_Pos.z);
+					Gtmppos = Math::Vector3(m_Pos.x, m_Pos.y+0.5f, m_Pos.z);
 					StateStore = 3;
-					break;
-				default:
 					break;
 				}
 
@@ -221,6 +246,14 @@ void C_Transwait::Update()
 			WPos += WVec;
 			PPos += PVec;
 			GPos += GVec;
+			SPos[0] += WVec;
+			SPos[1] += PVec;
+			SPos[2] += GVec;
+
+			for (int i = 0; i < 3; i++)
+			{
+				SPos[i].y = Wstart_mat.Translation().y;
+			}
 
 			PPos.y += gravity;
 			GPos.y += gravity * 0.8f;
@@ -230,7 +263,7 @@ void C_Transwait::Update()
 			//一定距離以内になると最終位置に変換する
 			WPos = (Wlen < 0.2f)? Wtmppos:WPos;
 			PPos = (Plen < 0.2f)? Ptmppos:PPos;
-			GPos = (Glen < 0.2f) ?Gtmppos:GPos;
+			GPos = (Glen < 0.2f)? Gtmppos:GPos;
 			
 			m_animeProgress += 0.04f;
 			//変換動画完了
@@ -254,6 +287,11 @@ void C_Transwait::Update()
 		W_mat = RotMat * W_trans;
 		P_mat = RotMat * P_trans;
 		G_mat = RotMat * G_trans;
+		Math::Matrix S_trans[3];
+		for (int i = 0; i < 3; i++)
+		{
+			S_mat[i] = DirectX::XMMatrixTranslation(SPos[i].x, SPos[i].y-0.8f, SPos[i].z);
+		}
 	}
 }
 

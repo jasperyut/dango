@@ -15,14 +15,17 @@ private:
 	KdModel m_partW;
 	KdModel m_partG;
 	KdModel m_partP;
+	KdModel m_Shadow[3];
 
 	Math::Vector3 m_Pos;
 
 	Math::Matrix W_mat;
 	Math::Matrix G_mat;
 	Math::Matrix P_mat;
+	Math::Matrix S_mat[3];
 	
 	Math::Vector3 WPos, PPos, GPos;
+	Math::Vector3 SPos[3];
 
 	Math::Matrix Wstart_mat;
 	Math::Matrix Pstart_mat;

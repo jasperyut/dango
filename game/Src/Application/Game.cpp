@@ -370,8 +370,6 @@ void GameScene::Update()
 			case true:
 				m_StatePos = m_Mat.Translation();
 				break;
-			default:
-				break;
 			}
 
 		}
@@ -403,8 +401,6 @@ void GameScene::Update()
 			case true:
 				m_StatePos = m_Mat.Translation();
 				
-				break;
-			default:
 				break;
 			}
 
@@ -490,32 +486,63 @@ void GameScene::Update()
 //描画処理
 void GameScene::Draw()
 {
-
-	SHADER.m_standardShader.SetToDevice();
-	//背景
-	m_Background->Draw();
-	//背景の飾り
-	m_Backitem->Draw();
-
-	SHADER.m_effectShader.SetToDevice();
-	//地面
-	m_Ground->Draw();
-
-	//第三ステージしか写ってない
-	if (SYSTEM.GetnowStage() == 3)
+	//ラムダ式で関数を作成
+	auto drawCharacters = [this]()
 	{
-		for (UINT i = 0; i < m_Coal.size(); i++)
+		SHADER.m_standardShader.SetToDevice();
+		//背景
+		m_Background->Draw();
+		//背景の飾り
+		m_Backitem->Draw();
+
+		SHADER.m_effectShader.SetToDevice();
+		//地面
+		m_Ground->Draw();
+
+		//第三ステージしか写ってない
+		if (SYSTEM.GetnowStage() == 3)
 		{
-			m_Coal[i]->Draw();
+			for (UINT i = 0; i < m_Coal.size(); i++)
+			{
+				m_Coal[i]->Draw();
+			}
 		}
+
+		SHADER.m_standardShader.SetToDevice();
+		if (m_BlockManager != nullptr)
+		{
+			//3Dアイテム
+			m_BlockManager->Draw();
+		}
+	};
+
+	//=====================================
+	// IBL画像生成描画
+	//=====================================
+	if (m_cubeMapGen.GetCubeMap() == nullptr)
+	{
+		//100番目スロットのテクスチャを解除
+		ID3D11ShaderResourceView* nullSRV = nullptr;
+		D3D.GetDevContext()->PSSetShaderResources(
+			100,	//セットするスロット番号
+			1,		//セットする数
+			&nullSRV
+		);
+		//キューブマップ生成描画
+
+		m_cubeMapGen.Generate(512, m_StatePos, drawCharacters);
+
+		//作成したキューブマップを、シェーダーに渡す
+		D3D.GetDevContext()->PSSetShaderResources(
+			100,	//セットするスロット番号
+			1,		//セットする数
+			m_cubeMapGen.GetCubeMap()->GetSRViewAddress()
+		);
 	}
 
-	SHADER.m_standardShader.SetToDevice();
-	if (m_BlockManager != nullptr)
-	{
-		//3Dアイテム
-		m_BlockManager->Draw();
-	}
+	//全物体の描画
+	drawCharacters();
+
 	//パターン変換途中じゃない場合
 	if (SYSTEM.Getplayframe() == false)
 	{
@@ -576,7 +603,7 @@ void GameScene::Draw()
 		SHADER.m_spriteShader.DrawTex(&m_Startgame, Math::Rectangle(0, 0, 940, 300), startalpha);
 
 
-		if (intro == false)
+		if (intro == false&&SYSTEM.GetnowStage()!=0)
 		{
 			SHADER.m_spriteShader.SetMatrix(clock_mat);
 			SHADER.m_spriteShader.DrawTex(&m_Clock, Math::Rectangle(0, 0, 108, 108), 1.0f);
@@ -613,8 +640,8 @@ void GameScene::Init()
 	// 平行ライト設定
 	SHADER.m_cb8_Light.Work().DL_Dir = { 1,-1,0 };
 	SHADER.m_cb8_Light.Work().DL_Dir.Normalize();
-	SHADER.m_cb8_Light.Work().DL_Color = { 2,2,2 };
-	SHADER.m_cb8_Light.Work().AmbientLight = { 0.5f,0.5f,0.5f };
+	SHADER.m_cb8_Light.Work().DL_Color = { 0.5,0.5,0.5 };
+	//SHADER.m_cb8_Light.Work().AmbientLight = { 0.5f,0.5f,0.5f };
 	// ライトのデータを書き込む
 	SHADER.m_cb8_Light.Write();
 

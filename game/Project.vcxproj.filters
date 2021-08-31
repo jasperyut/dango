@@ -280,6 +280,12 @@
     <ClInclude Include="Src\Application\canbutton.h">
       <Filter>Src\Application\3Ditem\header</Filter>
     </ClInclude>
+    <ClInclude Include="Src\System\Direct3D\KdCubeMapGenerator.h">
+      <Filter>Src\System\Direct3D</Filter>
+    </ClInclude>
+    <ClInclude Include="Src\System\Direct3D\KdCamera.h">
+      <Filter>Src\System\Direct3D</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\Pch.cpp">
@@ -434,6 +440,12 @@
     </ClCompile>
     <ClCompile Include="Src\Application\canbutton.cpp">
       <Filter>Src\Application\3Ditem\source</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\System\Direct3D\KdCubeMapGenerator.cpp">
+      <Filter>Src\System\Direct3D</Filter>
+    </ClCompile>
+    <ClCompile Include="Src\System\Direct3D\KdCamera.cpp">
+      <Filter>Src\System\Direct3D</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

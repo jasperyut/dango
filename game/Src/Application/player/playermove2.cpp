@@ -4,16 +4,21 @@
 C_playermove2::C_playermove2()
 {
 	m_Model.Load("Data/model/player/dangomixtrans2.gltf");
+	m_Shadow.Load("Data/model/shadow.gltf");
 	soundwait = 0;
 	scaleang = 0;
 	bounceXZ = 1.0f;
 	bounceY = 1.0f;
+	Salpha = 1.0f;
 	isfalling = false;
+	m_SScale = DirectX::XMMatrixScaling(1.5, 1.5, 1.5);
+	m_SMat = m_SScale;
 }
 
 C_playermove2::~C_playermove2()
 {
 	m_Model.Release();
+	m_Shadow.Release();
 }
 
 
@@ -22,6 +27,8 @@ void C_playermove2::Draw(Math::Matrix& _mat)
 {
 	SHADER.m_standardShader.SetWorldMatrix(_mat);
 	SHADER.m_standardShader.DrawModel(&m_Model);
+	SHADER.m_standardShader.SetWorldMatrix(m_SMat);
+	SHADER.m_standardShader.DrawModel(&m_Shadow, Salpha);
 }
 
 void C_playermove2::Update(std::unique_ptr<BlockManager>& _blockManager, Math::Matrix& _mat, float& _ang)
@@ -36,6 +43,7 @@ void C_playermove2::Update(std::unique_ptr<BlockManager>& _blockManager, Math::M
 	{
 		//前のパターンの位置と角度情報を入れる
 		m_Pos = game->GetPos();
+		m_SPos = game->GetPos();
 		m_ang = game->GetplayerAng();
 	}
 	Math::Vector3 moveVec = {};
@@ -83,10 +91,10 @@ void C_playermove2::Update(std::unique_ptr<BlockManager>& _blockManager, Math::M
 
 	gravity -= 0.01f;
 	m_Pos.y += gravity;
-	if (m_Pos.y <= 0)
+	if (m_Pos.y <= 0.5)
 	{
 		gravity = 0;
-		m_Pos.y = 0;
+		m_Pos.y = 0.5;
 	}
 	Math::Vector3 DownRayVec;
 	Math::Vector3 returnDownVec;
@@ -97,6 +105,24 @@ void C_playermove2::Update(std::unique_ptr<BlockManager>& _blockManager, Math::M
 		m_Pos.y += returnDownVec.y;
 		gravity = 0;
 	}
+
+	Math::Vector3 SDownRayVec;
+	SDownRayVec = Math::Vector3{ 0.0f,-1.0f,0.0f };
+	float Srange;
+	Srange = range * 20;
+	if ((_blockManager->CheckHit(m_Pos, SDownRayVec, m_hitDis, returnDownVec, Srange)))
+	{
+		m_SPos.y = m_Pos.y - m_hitDis + 0.1f;
+	}
+	else
+	{
+		m_SPos.y = -0.9f;
+	}
+
+	Math::Vector3 PtoSVec;
+	float PtoSLen;
+	PtoSLen = PtoSVec.Distance(m_Pos, (m_SPos + Math::Vector3{ 0.0f, 0.8f, 0.0f }));
+	Salpha = 1.0f - PtoSLen / 10;
 
 	//水面に入ったらゲームオーバー
 	if (game->Getwater()->CheckHit(m_Pos, DownRayVec, m_hitDis, range))
@@ -182,6 +208,7 @@ void C_playermove2::Update(std::unique_ptr<BlockManager>& _blockManager, Math::M
 		moveVec.Normalize();
 		moveVec *= 0.1f;
 		m_Pos += moveVec;
+		m_SPos += moveVec;
 		Math::Vector3 returnVec;
 
 		//ステージのアイテムと範囲外に当たったら
@@ -211,9 +238,10 @@ void C_playermove2::Update(std::unique_ptr<BlockManager>& _blockManager, Math::M
 
 	m_Rot = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(m_ang));
 	m_Scale = DirectX::XMMatrixScaling(bounceXZ, bounceY, bounceXZ);
-
+	
 	//合成
 	_mat = m_Scale * m_Rot * m_Trans;
 	_ang = m_ang;
-
+	m_STrans = DirectX::XMMatrixTranslation(m_SPos.x, m_SPos.y, m_SPos.z);
+	m_SMat = m_Scale* m_STrans;
 }

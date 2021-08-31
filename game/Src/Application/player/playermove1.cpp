@@ -7,6 +7,7 @@ C_playermove1::C_playermove1()
 	m_partW.Load("Data/model/player/dango1.gltf");
 	m_partG.Load("Data/model/player/dango3.gltf");
 	m_partP.Load("Data/model/player/dango2.gltf");
+	m_Shadow.Load("Data/model/shadow.gltf");
 	soundwait = 0;
 	jumpSound = true;
 	storeSound = false;
@@ -15,6 +16,7 @@ C_playermove1::C_playermove1()
 	pressure = 1.0f;
 	bounceXZ = 1.0f;
 	bounceY = 1.0f;
+	Salpha = 1.0f;
 }
 C_playermove1::~C_playermove1()
 {
@@ -22,6 +24,7 @@ C_playermove1::~C_playermove1()
 	m_partW.Release();
 	m_partG.Release();
 	m_partP.Release();
+	m_Shadow.Release();
 }
 void C_playermove1::Draw(Math::Matrix& _mat)
 {
@@ -31,6 +34,8 @@ void C_playermove1::Draw(Math::Matrix& _mat)
 	SHADER.m_standardShader.DrawModel(&m_partG);
 	SHADER.m_standardShader.SetWorldMatrix(P_mat);
 	SHADER.m_standardShader.DrawModel(&m_partP);
+	SHADER.m_standardShader.SetWorldMatrix(m_SMat);
+	SHADER.m_standardShader.DrawModel(&m_Shadow, Salpha);
 }
 
 void C_playermove1::Update(std::unique_ptr<BlockManager>& _blockManager, Math::Matrix& _mat, float& _ang)
@@ -44,9 +49,12 @@ void C_playermove1::Update(std::unique_ptr<BlockManager>& _blockManager, Math::M
 	{
 		//前のパターンの位置と角度情報を入れる
 		m_Pos = game->GetPos();
+		m_SPos = game->GetPos();
 		m_ang = game->GetplayerAng();
 	}
-	
+
+
+
 	Math::Vector3 moveVec = {};
 	Math::Matrix camMat;
 
@@ -88,66 +96,60 @@ void C_playermove1::Update(std::unique_ptr<BlockManager>& _blockManager, Math::M
 			moveFlg = true;
 		}
 
-		
-			//スペースキーを押す
-			if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+
+		//スペースキーを押す
+		if (GetAsyncKeyState(VK_SPACE) & 0x8000)
+		{
+
+			if (SYSTEM.Getjumping() == false)
 			{
-				
-				if (SYSTEM.Getjumping()== false)
+				jumpSound = false;
+				pressure *= 0.99f;//圧力を溜める
+
+				if (pressure <= 0.5f)
 				{
-					jumpSound = false;
-					pressure *= 0.99f;//圧力を溜める
+					pressure = 0.5f;
+				}
+				release = 1 - pressure;
 
-					if (pressure <= 0.5f)
-					{
-						pressure = 0.5f;
-					}
-					release = 1 - pressure;
+				cur_pos = m_Pos;
 
-					cur_pos = m_Pos;
-
-					if (storeSound == false)
-					{
-						storeSound = true;
-						SYSTEM.GetSoundManager().SetSound("Data/music/powerstore.wav");
-					}
+				if (storeSound == false)
+				{
+					storeSound = true;
+					SYSTEM.GetSoundManager().SetSound("Data/music/powerstore.wav");
 				}
 			}
-			else
+		}
+		else
+		{
+
+			storeSound = false;
+			pressure = 1.0f;//元の圧力に戻る
+
+			//ジャンプ状態の判定
+			if (release > 0)
 			{
-				
-				storeSound = false;
-				pressure = 1.0f;//元の圧力に戻る
-				
-				//ジャンプ状態の判定
-				if (release > 0)
-				{
-					SYSTEM.Setjumping(true);
-				}
-
-				if (jumpSound == false)
-				{
-					jumpSound = true;
-					SYSTEM.GetSoundManager().SetSound("Data/music/jump.wav");
-				}
-
+				SYSTEM.Setjumping(true);
 			}
 
-		
+			if (jumpSound == false)
+			{
+				jumpSound = true;
+				SYSTEM.GetSoundManager().SetSound("Data/music/jump.wav");
+			}
 
+		}
 
 		Math::Vector3 tmp_pos;
 		tmp_pos.y = m_Pos.y - cur_pos.y;
 		float jumplen;
 		jumplen = tmp_pos.Length();
 
-		
-
-		if (SYSTEM.Getjumping()==true)
+		if (SYSTEM.Getjumping() == true)
 		{
 			m_Pos.y += release;
 		}
-
 
 	}
 	//慣性移動の設定----------------------------------
@@ -174,7 +176,7 @@ void C_playermove1::Update(std::unique_ptr<BlockManager>& _blockManager, Math::M
 	}
 	else
 	{
-		Inertia -= Inertia / 10;
+		Inertia -= Inertia / 10.0f;
 	}
 	//----------------------------------------------
 
@@ -192,13 +194,30 @@ void C_playermove1::Update(std::unique_ptr<BlockManager>& _blockManager, Math::M
 	DownRayVec = Math::Vector3{ 0.0f,-1.0f,0.0f };
 	DownRayVec *= 0.1f;
 	//ブロックにあったらの処理
-	if ((_blockManager->CheckHit(m_Pos, DownRayVec, m_hitDis, returnDownVec, range)))
+	if (_blockManager->CheckHit(m_Pos, DownRayVec, m_hitDis, returnDownVec, range))
 	{
 		m_Pos.y += returnDownVec.y;
 		gravity = 0;
 
 	}
-	
+	Math::Vector3 SDownRayVec;
+	SDownRayVec = Math::Vector3{ 0.0f,-1.0f,0.0f };
+	float Srange;
+	Srange = range * 20;
+	if ((_blockManager->CheckHit(m_Pos, SDownRayVec, m_hitDis, returnDownVec, Srange)))
+	{
+		m_SPos.y = m_Pos.y - m_hitDis + 0.1f;
+	}
+	else
+	{
+		m_SPos.y = -0.8f;
+	}
+
+	Math::Vector3 PtoSVec;
+	float PtoSLen;
+	PtoSLen = PtoSVec.Distance(m_Pos, (m_SPos + Math::Vector3{ 0.0f, 0.8f, 0.0f }));
+	Salpha = 1.0f - PtoSLen / 10;
+
 	//ジャンプ状態
 	if (SYSTEM.Getjumping() == true)
 	{
@@ -225,7 +244,7 @@ void C_playermove1::Update(std::unique_ptr<BlockManager>& _blockManager, Math::M
 	if (SYSTEM.GetoverFlg() == true)
 	{
 		m_Pos.y += -0.05f;
-		gravity = 0;
+		gravity = 0.0f;
 	}
 
 	//団子のBOINGBOING設定
@@ -302,6 +321,7 @@ void C_playermove1::Update(std::unique_ptr<BlockManager>& _blockManager, Math::M
 		moveVec *= 0.4f;
 
 		m_Pos += moveVec;
+		m_SPos += moveVec;
 		Math::Vector3 returnVec;
 
 		//ステージのアイテムに当たったら,範囲外に当たったら
@@ -323,14 +343,16 @@ void C_playermove1::Update(std::unique_ptr<BlockManager>& _blockManager, Math::M
 	}
 
 	m_Scale = DirectX::XMMatrixScaling(bounceXZ, bounceY + (pressure - 1.0f), bounceXZ);
-	m_Trans = DirectX::XMMatrixTranslation(m_Pos.x, m_Pos.y-(1.0-pressure), m_Pos.z);
+	m_Trans = DirectX::XMMatrixTranslation(m_Pos.x, m_Pos.y - (1.0f - pressure), m_Pos.z);
 	m_Rot = DirectX::XMMatrixRotationY(DirectX::XMConvertToRadians(m_ang));
 
 	//合成
 	_mat = m_Scale * m_Rot * m_Trans;
 	_ang = m_ang;
-	G_mat = m_Scale * m_Rot * DirectX::XMMatrixTranslation(m_Pos.x + Inertia.x / 2, m_Pos.y - (1.8f - pressure*2 - bounceY) + Inertia.y / 2, m_Pos.z + Inertia.z / 2);
-	P_mat = m_Scale * m_Rot * DirectX::XMMatrixTranslation(m_Pos.x + Inertia.x, m_Pos.y - (1.8f - pressure*1.5 - bounceY*1.5) * 2 + Inertia.y, m_Pos.z + Inertia.z);
+	G_mat = m_Scale * m_Rot * DirectX::XMMatrixTranslation(m_Pos.x + Inertia.x / 2.0f, m_Pos.y - (1.8f - pressure * 2 - bounceY) + Inertia.y / 2.0f, m_Pos.z + Inertia.z / 2.0f);
+	P_mat = m_Scale * m_Rot * DirectX::XMMatrixTranslation(m_Pos.x + Inertia.x, m_Pos.y - (1.8f - pressure * 1.5f - bounceY * 1.5f) * 2.0f + Inertia.y, m_Pos.z + Inertia.z);
+	m_STrans = DirectX::XMMatrixTranslation(m_SPos.x, m_SPos.y, m_SPos.z);
+	m_SMat = m_Scale * m_STrans;
 }
 
 

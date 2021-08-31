@@ -42,6 +42,7 @@
                     "index" : 0,
                     "texCoord" : 0
                 },
+                "metallicFactor" : 0.5,
                 "metallicRoughnessTexture" : {
                     "index" : 1,
                     "texCoord" : 0
@@ -70,7 +71,7 @@
             "source" : 0
         },
         {
-            "source" : 0
+            "source" : 1
         }
     ],
     "images" : [
@@ -78,6 +79,11 @@
             "mimeType" : "image/jpeg",
             "name" : "8777777777777",
             "uri" : "8777777777777.jpg"
+        },
+        {
+            "mimeType" : "image/png",
+            "name" : "8777777777777",
+            "uri" : "8777777777777-1.png"
         }
     ],
     "accessors" : [

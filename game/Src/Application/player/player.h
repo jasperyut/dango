@@ -11,6 +11,7 @@ public:
 
 private:
 	KdModel m_Dango;
+	KdModel m_Shadow;
 	
 	Math::Matrix m_Mat;
 	Math::Matrix camMat;
@@ -18,10 +19,15 @@ private:
 	Math::Matrix m_Trans;
 	Math::Matrix m_Scale;
 
+	Math::Matrix m_SMat;
+	Math::Matrix m_STrans;
+
 	Math::Vector3 moveVec = {};
 	Math::Vector3 m_Pos;
+	Math::Vector3 m_SPos;
 
 	int soundwait;
+	int stateFlg;
 	float m_camAngY = {};
 	float m_camAngX = {};
 	float scaleang;
@@ -29,7 +35,7 @@ private:
 	float bounceY;
 	float m_ang = 0;
 	float range = 1.0f;
-	int stateFlg;
+	float Salpha;
 	float m_hitDis = {};
 	float gravity = {};//d—Í
 	bool moveFlg;//ˆÚ“®’†

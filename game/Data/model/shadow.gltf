@@ -9,11 +9,26 @@
             "name" : "Scene",
             "nodes" : [
                 0,
-                1
+                1,
+                2
             ]
         }
     ],
     "nodes" : [
+        {
+            "name" : "Light",
+            "rotation" : [
+                0.16907575726509094,
+                0.7558803558349609,
+                -0.27217137813568115,
+                0.570947527885437
+            ],
+            "translation" : [
+                4.076245307922363,
+                5.903861999511719,
+                -1.0054539442062378
+            ]
+        },
         {
             "name" : "Camera",
             "rotation" : [
@@ -30,41 +45,32 @@
         },
         {
             "mesh" : 0,
-            "name" : "\u5713\u67f1\u9ad4.004",
-            "scale" : [
-                1.907340168952942,
-                7.80698823928833,
-                1.907340168952942
-            ],
-            "translation" : [
-                12.862131118774414,
-                15.792162895202637,
-                0
-            ]
+            "name" : "Plane"
         }
     ],
     "materials" : [
         {
+            "alphaMode" : "BLEND",
             "doubleSided" : true,
             "emissiveFactor" : [
                 0,
                 0,
                 0
             ],
-            "name" : "\u6750\u8cea.001",
+            "name" : "Material.004",
             "pbrMetallicRoughness" : {
                 "baseColorTexture" : {
                     "index" : 0,
                     "texCoord" : 0
                 },
-                "metallicFactor" : 0.699999988079071,
-                "roughnessFactor" : 0
+                "metallicFactor" : 0,
+                "roughnessFactor" : 0.5
             }
         }
     ],
     "meshes" : [
         {
-            "name" : "\u5713\u67f1\u9ad4.004",
+            "name" : "Plane",
             "primitives" : [
                 {
                     "attributes" : {
@@ -85,24 +91,24 @@
     ],
     "images" : [
         {
-            "mimeType" : "image/jpeg",
-            "name" : "water",
-            "uri" : "water.jpg"
+            "mimeType" : "image/png",
+            "name" : "shadow",
+            "uri" : "shadow.png"
         }
     ],
     "accessors" : [
         {
             "bufferView" : 0,
             "componentType" : 5126,
-            "count" : 130,
+            "count" : 4,
             "max" : [
-                1.0000009536743164,
                 1,
+                0,
                 1
             ],
             "min" : [
                 -1,
-                -2.051572322845459,
+                0,
                 -1
             ],
             "type" : "VEC3"
@@ -110,48 +116,48 @@
         {
             "bufferView" : 1,
             "componentType" : 5126,
-            "count" : 130,
+            "count" : 4,
             "type" : "VEC3"
         },
         {
             "bufferView" : 2,
             "componentType" : 5126,
-            "count" : 130,
+            "count" : 4,
             "type" : "VEC2"
         },
         {
             "bufferView" : 3,
             "componentType" : 5123,
-            "count" : 372,
+            "count" : 6,
             "type" : "SCALAR"
         }
     ],
     "bufferViews" : [
         {
             "buffer" : 0,
-            "byteLength" : 1560,
+            "byteLength" : 48,
             "byteOffset" : 0
         },
         {
             "buffer" : 0,
-            "byteLength" : 1560,
-            "byteOffset" : 1560
+            "byteLength" : 48,
+            "byteOffset" : 48
         },
         {
             "buffer" : 0,
-            "byteLength" : 1040,
-            "byteOffset" : 3120
+            "byteLength" : 32,
+            "byteOffset" : 96
         },
         {
             "buffer" : 0,
-            "byteLength" : 744,
-            "byteOffset" : 4160
+            "byteLength" : 12,
+            "byteOffset" : 128
         }
     ],
     "buffers" : [
         {
-            "byteLength" : 4904,
-            "uri" : "waterfall.bin"
+            "byteLength" : 140,
+            "uri" : "shadow.bin"
         }
     ]
 }

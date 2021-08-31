@@ -7,6 +7,8 @@ Texture2D g_emissiveTex : register(t1);     // エミッシブテクスチャ
 Texture2D g_mrTex : register(t2);            // メタリック/ラフネステクスチャ
 
 
+TextureCube g_IBLTex : register(t100);
+
 // サンプラ
 SamplerState g_ss : register(s0);
 
@@ -39,6 +41,17 @@ float BlinnPhong(float3 lightDir, float3 vCam, float3 normal, float specPower)
     return spec * ((specPower + 2) / (2 * 3.1415926535));
 }
 
+float GGX(float3 lightDir, float3 vCam, float3 normal, float roughness)
+{
+    float3 H = normalize(-lightDir + vCam);
+    float NdotH = saturate(dot(normal, H));
+    float alpha = roughness * roughness;
+    float d = NdotH * NdotH * (alpha * alpha - 1) + 1;
+    d = max(0.000001, 3.1415926535 * d * d);
+	
+    return (alpha * alpha) / d;
+}
+
 //================================
 // ピクセルシェーダ
 //================================
@@ -49,10 +62,8 @@ float4 main(VSOutput In) : SV_Target0
     float camDist = length(vCam);       // カメラ - ピクセル距離
     vCam = normalize(vCam);
 
-    // 法線正規化
+   // 法線正規化
     float3 wN = normalize(In.wN);
-
-
     //------------------------------------------
     // 材質色
     //------------------------------------------
@@ -76,7 +87,11 @@ float4 main(VSOutput In) : SV_Target0
     //
     //------------------------------------------
     // 最終的な色
-    float3 color = 0;
+    //float3 color = 0;
+	//最終的な拡散色
+    float3 diffuseColor = 0;
+	//最終的な反射色
+    float3 specularColor = 0;
 
     // ライト有効時
 	if (g_LightEnable)
@@ -101,8 +116,8 @@ float4 main(VSOutput In) : SV_Target0
 			lightDiffuse /= 3.1415926535;
 
 			// 光の色 * 材質の拡散色
-			color += (g_DL_Color * lightDiffuse) * baseDiffuse * g_Material.BaseColor.a;
-		}
+            diffuseColor += (g_DL_Color * lightDiffuse) * baseDiffuse * g_Material.BaseColor.a;
+        }
 
 		// Specular(反射色) 正規化Blinn-Phong NDFを使用
 
@@ -119,11 +134,11 @@ float4 main(VSOutput In) : SV_Target0
 		//float spec = RoughnessToSpecPower(roughness);
 		{
 			// Blinn-Phong NDF
-			float spec = BlinnPhong(g_DL_Dir, vCam, wN, specPower);
+            float spec = GGX(g_DL_Dir, vCam, wN, roughness);
 
 			// 光の色 * 反射光の強さ * 材質の反射色 * 正規化係数
-			color += (g_DL_Color * spec) * baseSpecular * g_Material.BaseColor.a;
-		}
+            specularColor += (g_DL_Color * spec) * baseSpecular * g_Material.BaseColor.a;
+        }
 
 
         //------------------
@@ -162,33 +177,52 @@ float4 main(VSOutput In) : SV_Target0
 					//ディフューズ減衰
 					lightDiffuse *= lightAttenuation;
 
-					color += g_PL[pi].color * lightDiffuse * baseDiffuse * g_Material.BaseColor.a;
+                    diffuseColor += g_PL[pi].color * lightDiffuse * baseDiffuse * g_Material.BaseColor.a;
 
 					//スペキュラ
 					float spec = BlinnPhong(-PL_Dir, vCam, wN, specPower);
 					spec *= lightAttenuation;
-					color += (g_PL[pi].color * spec) * baseSpecular * g_Material.BaseColor.a;
-				}
+                    specularColor += (g_PL[pi].color * spec) * baseSpecular * g_Material.BaseColor.a;
+                }
 			}
 		}
 
         //------------------
         // 環境光
         //------------------
-        color += g_AmbientLight * baseColor.rgb * g_Material.BaseColor.a;
+        diffuseColor += g_AmbientLight * baseColor.rgb * g_Material.BaseColor.a;
 
         //------------------
         // エミッシブ
         //------------------
-        color += g_emissiveTex.Sample(g_ss, In.UV).rgb * g_Material.Emissive * g_Material.BaseColor.a;
+        diffuseColor += g_emissiveTex.Sample(g_ss, In.UV).rgb * g_Material.Emissive * g_Material.BaseColor.a;
+        
+        //------------------
+		// IBL
+		//------------------
+        const float mipLevels = 10; //mipmapレベル数
+        const float IBLIntensity = 0.8; //IBLの強度
+		//IBL拡散光
+        float3 IBLDiffuse = g_IBLTex.SampleLevel(
+		g_ss, wN, mipLevels - 3).rgb;
+        diffuseColor += IBLDiffuse * baseDiffuse * IBLIntensity;
+		//IBL反射光
+        float3 vRef = reflect(-vCam, wN);
+        float3 IBLSpecular = g_IBLTex.SampleLevel(
+		g_ss, vRef, pow(roughness, 0.5) * (mipLevels - 1)).rgb;
+		
+        specularColor += IBLSpecular * baseSpecular * IBLIntensity;
     }
     // ライト無効時
     else
     {
         // 材質の色をそのまま使用
-        color = baseColor.rgb * g_Material.BaseColor.a;
+        diffuseColor = baseColor.rgb * g_Material.BaseColor.a;
     }
 
+    float3 color;
+    color = diffuseColor + specularColor;
+    
     //------------------------------------------
     // 距離フォグ
     //------------------------------------------

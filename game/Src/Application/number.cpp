@@ -12,7 +12,6 @@ C_number::~C_number()
 }
 void C_number::Draw()
 {
-
 	Math::Rectangle rcNum[] = {
 	{0,0,  27,34},
 	{28,0, 27,34},

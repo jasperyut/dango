@@ -11,23 +11,30 @@ public:
 
 private:
 	KdModel m_Model;
+	KdModel m_Shadow;
 
 	Math::Matrix m_Mat;
 	Math::Matrix m_Rot;
 	Math::Matrix m_Trans;
 	Math::Matrix m_Scale;
+
+	Math::Matrix m_SMat;
+	Math::Matrix m_STrans;
+	Math::Matrix m_SScale;
 	
 	Math::Vector3 m_Pos;
+	Math::Vector3 m_SPos;
 
 	
 	float scaleang;
 	float bounceXZ;
 	float bounceY;
 	float	m_ang = 0;
-	float range = 1.8f;
+	float range = 2.1f;
 	float a = 1;
 	float gravity = {};//d—Í
 	float m_hitDis = {};
+	float Salpha;
 	int soundwait;
 	int stateFlg;
 	bool moveFlg;//ˆÚ“®’†
